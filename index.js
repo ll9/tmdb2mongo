@@ -25,7 +25,10 @@ helper.getMax(api_key)
                         setTimeout(function() {myLoop(i)}, 10000);
                     }
                     else {
-                        db.collection('tmdb').insertOne(JSON.parse(body));
+                        var data = JSON.parse(body);
+                        if (data.status_code != 34) { //Code 34 means that this resource doesn't exist anymore at this location (removed/eddited)
+                            db.collection('tmdb').insertOne(JSON.parse(body));
+                        }
                         if (i % 1000 == 0) {
                             console.log(new Date().toISOString());
                             console.log("processed " + i + " movies, still " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
