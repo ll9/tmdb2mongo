@@ -14,6 +14,7 @@ helper.getMax(api_key)
         console.log("Started at: " + new Date().toISOString());
         console.log("This application will log information whenever 1000 movies were processed");
         console.log("Still ned " + MAX + " Movies to process, estimated time: ~" + MAX/240 + " minutes\n");
+        var insertions = 0;
         (function myLoop (i) {          
             setTimeout(function () {   
         
@@ -25,13 +26,15 @@ helper.getMax(api_key)
                         setTimeout(function() {myLoop(i)}, 10000);
                     }
                     else {
+                        var count = db.collection('tmdb').find().count();
                         var data = JSON.parse(body);
                         if (data.status_code != 34) { //Code 34 means that this resource doesn't exist anymore at this location (removed/eddited)
                             db.collection('tmdb').insertOne(JSON.parse(body));
-                        }
-                        if (i % 1000 == 0) {
-                            console.log(new Date().toISOString());
-                            console.log("processed " + i + " movies, still " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
+                            insertions++;
+                            if (insertions % 1000 == 0) {
+                                console.log(new Date().toISOString());
+                                console.log("inserted " + insertions + " movies, " + "processed " + i + " ID'S still " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
+                            }
                         }
                         if (++i < MAX) 
                             myLoop(i);      //  increment i and call myLoop again if i < MAX
