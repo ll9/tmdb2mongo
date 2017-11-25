@@ -16,9 +16,13 @@ var getMax = function (api_key) {
     });
 };
 
-var getMovieData = (api_key, id) => {
+var getMovieData = (id, options) => {
+    append_to_response = options.append_to_response.join(",");
+    url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + options.key + 
+        (append_to_response ? ("&append_to_response="+append_to_response) : "");
+    
     return new Promise((resolve, reject) => {
-        rp("https://api.themoviedb.org/3/movie/" + id + "?api_key=" + api_key + "&append_to_response=videos")
+        rp(url)
             .then((html) => {
                 data = JSON.parse(html);
                 if (data.status_code != 34) {

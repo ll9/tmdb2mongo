@@ -2,6 +2,7 @@ var request = require('request');
 var rp = require('request-promise');
 var MongoClient = require('mongodb').MongoClient;
 var api_key = require('./config.json').key;
+var options = require('./config.json');
 var helper = require('./helper.js');
 
 
@@ -22,7 +23,7 @@ helper.getMax(api_key)
         var interval = setInterval(() => {
             i++
             
-            helper.getMovieData(api_key, i)
+            helper.getMovieData(i, options)
                 .then((data) => {
                     db.collection('tmdb').insertOne(data);
                     insertions++;
@@ -39,7 +40,7 @@ helper.getMax(api_key)
                         console.log("inserted " + insertions + " movies, " + "processed " + i + " ID'S still " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
                     }
                 })
-                
+
             if (i >= MAX) {
                 console.log("Finished");
                 clearInterval(interval);
