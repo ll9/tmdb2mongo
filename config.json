@@ -1,1 +1,4 @@
-{"key": "YOUR_API_KEY"}
+{
+    "key": "YOUR_API_KEY",
+    "append_to_response": ["videos", "credits"]
+}
