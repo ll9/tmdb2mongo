@@ -28,10 +28,14 @@ helper.getMax(api_key)
                     db.collection('tmdb').insertOne(data);
                     insertions++;
                 })
-                .catch((statusCode) => {
-                    if (statusCode === 429) {
+                .catch((error) => {
+                    if (error.name == "StatusCodeError" && error.statusCode === 429) {
                         console.log("Accessed over 40 files within 10 seconds");
                         process.exit();
+                    }
+                    else if (error.name == "RequestError") {
+                        i--;
+                        console.log("Lost internet connection, retrying...");
                     }
                 })
                 .then(() => {

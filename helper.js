@@ -30,10 +30,10 @@ var getMovieData = (id, options) => {
                 }
             })
             .catch((error) => {
-                reject(error.statusCode);
-                if (error.statusCode === 429) { // made over 40 requests in 10 seconds
-                    throw "Too many requests within 10 seconds (40 allowed)";
-                }
+                // 404 Movie got editet removed -> no real error
+                // 429 over 40 requests within 10 seconds -> increase delay
+                // RequestError: lost internet connection
+                reject(error);
             });
     });
 };
