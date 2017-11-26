@@ -5,7 +5,7 @@ var api_key = require('./config.json').key;
 var options = require('./config.json');
 var helper = require('./helper.js');
 
-
+//TODO improve output (Time from float to int, logging interval etc)
 
 helper.getMax(api_key)
 .then(function(MAX) {
@@ -37,7 +37,7 @@ helper.getMax(api_key)
                 .then(() => {
                     if (i % 40 == 0) {
                         console.log(new Date().toISOString());
-                        console.log("inserted " + insertions + " movies, " + "processed " + i + " ID'S still " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
+                        console.log("inserted " + insertions + " movies, " + "processed " + i + " ID'S, " + (MAX - i) + " to go, estimated time: ~" + (MAX-i)/240 + " minutes\n");
                     }
                 })
 
@@ -45,7 +45,7 @@ helper.getMax(api_key)
                 console.log("Finished");
                 clearInterval(interval);
             }
-        }, 260)
+        }, 300)
     });
 });
 
