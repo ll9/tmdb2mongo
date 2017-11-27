@@ -30,8 +30,8 @@ helper.getMax(api_key)
                 })
                 .catch((error) => {
                     if (error.name == "StatusCodeError" && error.statusCode === 429) {
-                        console.log("Accessed over 40 files within 10 seconds");
-                        process.exit();
+                        i--;
+                        console.log("Accessed over 40 files within 10 seconds, retrying");
                     }
                     else if (error.name == "RequestError") {
                         i--;
